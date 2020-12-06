@@ -1,0 +1,49 @@
+CREATE TABLE wallets (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(12) NOT NULL,
+    type VARCHAR(12) NOT NULL,
+    starting_balance REAL NOT NULL,
+    current_balance REAL NOT NULL,
+    owner_id BIGINT NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE transactions (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    details VARCHAR(25) NOT NULL,
+    date DATE NOT NULL DEFAULT CURRENT_DATE,
+    type VARCHAR(10) NOT NULL,
+    amount REAL NOT NULL, 
+    owner_id BIGINT NOT NULL REFERENCES users(id),
+    wallet_id BIGINT NOT NULL REFERENCES wallets(id),
+    category_id BIGINT REFERENCES categories(id)
+);
+
+CREATE TABLE transfers (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    transfer_from BIGINT NOT NULL,
+    transfer_to BIGINT NOT NULL
+);
+
+CREATE TABLE categories (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    owner_id BIGINT NOT NULL
+);
+
+SELECT categories.id, categories.name, categories.type, COUNT(transactions.id) 
+FROM transactions
+LEFT JOIN categories
+ON transactions.category_id = categories.id
+WHERE transactions.owner_id=6
+GROUP BY categories.id;
+
+SELECT categories.name, COUNT(transactions.id) 
+FROM transactions
+LEFT JOIN categories
+ON transactions.category_id = categories.id
+WHERE transactions.owner_id = 6;
+
+SELECT SUM(amount)
+FROM transactions
+WHERE wallet_id=41;
