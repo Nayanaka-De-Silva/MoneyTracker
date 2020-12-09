@@ -7,7 +7,7 @@ const Login = () => {
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                await Backend.get("/logout");
+                await Backend.get("/users/logout");
             } catch(err) {console.log(err)}
         }
         fetchData();

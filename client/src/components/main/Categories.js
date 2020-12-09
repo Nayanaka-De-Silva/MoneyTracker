@@ -25,11 +25,11 @@ const Categories = () => {
     return (
         <div className="container">
             <div className="text-left display-4">Categories</div> <br />
-            <div className="container">
-                <div className="row">
-                    {categories && categories.some(category => category.type === "Income") ? <div className="col col-sm"><Category categoriesList={categories} type="Income" /></div> : null}
-                    {categories && categories.some(category => category.type === "Expense") ? <div className="col col-sm"><Category categoriesList={categories} type="Expense" /></div> : null}
-                    {categories && categories.some(category => category.type === "Transfer") ? <div className="col col-sm"><Category categoriesList={categories} type="Transfer" /></div> : null}
+            <div className="d-flex justify-content-between">
+                <div className="flex-col">
+                    {categories && categories.some(category => category.type === "Income") ? <Category categoriesList={categories} type="Income" /> : null}
+                    {categories && categories.some(category => category.type === "Expense") ? <Category categoriesList={categories} type="Expense" /> : null}
+                    {categories && categories.some(category => category.type === "Transfer") ? <Category categoriesList={categories} type="Transfer" />:null}
                 </div>
             </div>
         </div>

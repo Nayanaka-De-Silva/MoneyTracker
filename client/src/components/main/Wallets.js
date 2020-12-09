@@ -21,9 +21,9 @@ const Wallets = () => {
     },[history, setWallets])
 
     return (
-        <div>
+        <div className="container">
             <div className="text-left display-4">Wallets</div> <br />
-            <div className="container-fluid">
+            <div className="d-flex justify-content-around">
                 <div className="row">
                     {wallets && wallets.map(wallet => {
                         return (
