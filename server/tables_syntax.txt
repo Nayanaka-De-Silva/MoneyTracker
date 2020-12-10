@@ -47,3 +47,7 @@ WHERE transactions.owner_id = 6;
 SELECT SUM(amount)
 FROM transactions
 WHERE wallet_id=41;
+
+SELECT EXTRACT(YEAR FROM date) as Year, EXTRACT(MONTH FROM date) as Month, type, SUM(amount) 
+FROM transactions
+GROUP BY Year, Month, type;

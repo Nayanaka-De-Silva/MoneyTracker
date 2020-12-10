@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { WalletContext } from '../context/WalletContext';
-import { PieChart, Pie, Tooltip } from 'recharts';
+import ReactFrappeChart from 'react-frappe-charts';
 
 let expensesData = []
 let incomesData = []
@@ -46,27 +46,55 @@ const CategoryView = () => {
             <Header title="Detailed View"/>
             <div className="container">
                 <div className="row">
-                    <div className="col">
+                    {incomesCategories ?  
+                    <div className="col-sm">
                         <h5 className="text-center">Income</h5>
-                        <PieChart width={400} height={400}>
-                            <Pie dataKey="value" nameKey="name" isAnimationActive={true} data={incomesCategories} cx={200} cy={200} outerRadius={80} fill="#3ef75d" label />
-                            <Tooltip />
-                        </PieChart>
+                        <ReactFrappeChart 
+                                type="bar"
+                                colors={["#21ba45"]}
+                                axisOptions={{ xAxisMode: "tick", yAxisMode: "tick", xIsSeries: 1 }}
+                                height={250}
+                                data={{
+                                    labels: incomesCategories.map(cat => cat.name), 
+                                    datasets: [{values: incomesCategories.map(cat => cat.value)}],
+                                }}
+                            />
                     </div>
-                    <div className="col">
+                    :<></>}
+                    { expensesCategories ? 
+                    <div className="col-sm">
                         <h5 className="text-center">Expenses</h5>
-                        <PieChart width={400} height={400}>
-                            <Pie dataKey="value" nameKey="name" isAnimationActive={true} data={expensesCategories} cx={200} cy={200} outerRadius={80} fill="#eb584d" label />
-                            <Tooltip />
-                        </PieChart>
+                        <div className='justify-content-center'>
+                            <ReactFrappeChart 
+                                type="bar"
+                                colors={["#ba2147"]}
+                                axisOptions={{ xAxisMode: "tick", yAxisMode: "tick", xIsSeries: 1 }}
+                                height={250}
+                                data={{
+                                    labels: expensesCategories.map(cat => cat.name), 
+                                    datasets: [{values: expensesCategories.map(cat => cat.value)}],
+                                }}
+                            />
+                        </div>
                     </div>
+                    : <></>}
+                    {transfersCategories ? 
                     <div className="col">
                         <h5 className="text-center">Transfers</h5>
-                        <PieChart width={400} height={400}>
-                            <Pie dataKey="value" nameKey="name" isAnimationActive={true} data={transfersCategories} cx={200} cy={200} outerRadius={80} fill="#4d8bf0" label />
-                            <Tooltip />
-                        </PieChart>
+                        <div className='justify-content-center'>
+                            <ReactFrappeChart 
+                                type="bar"
+                                colors={["#4343e6"]}
+                                axisOptions={{ xAxisMode: "tick", yAxisMode: "tick", xIsSeries: 1 }}
+                                height={250}
+                                data={{
+                                    labels: transfersCategories.map(cat => cat.name), 
+                                    datasets: [{values: transfersCategories.map(cat => cat.value)}],
+                                }}
+                            />
+                        </div>
                     </div>
+                    :<></>}
                 </div>
             </div>
         </div>
