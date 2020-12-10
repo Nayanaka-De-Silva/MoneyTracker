@@ -36,7 +36,7 @@ const Category = ({ categoriesList, type }) => {
     }
 
     return (
-        <div className="col-md-auto">
+        <div className="col-4">
             <h5 style={{ cursor: "pointer" }} className="h5">{ type }</h5>
             <ul>
             {selectedCategories && selectedCategories.map(category => <li style={{ cursor: "pointer" }} onClick={()=>handleRemove(category)} key={category.id}>{category.name} ({category.count})</li>)}
