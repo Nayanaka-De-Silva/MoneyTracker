@@ -4,24 +4,39 @@ import Backend from '../apis/Backend';
 import Header from '../components/Header';
 import TransView from '../components/TransView';
 import { WalletContext } from '../context/WalletContext';
+import { Tabs, Tab } from 'react-bootstrap';
+
 
 const WalletView = () => {
     const history = useHistory();
 
     const { selectedWallet, setSelectedWallet, setSelectedTransaction } = useContext(WalletContext);
     const [transactions, setTransactions] = useState([]);
+    const [ dates, setDates ] = useState([])
+
+    const dates_temp = []
 
     useEffect(()=>{
+        console.log(transactions)    
+        console.log(dates)
         const fetchData = async () => {
             try{
                 const response = await Backend.get(`/wallets/${selectedWallet.id}`);
                 setTransactions(response.data.data);
                 setSelectedWallet({...selectedWallet, current_balance: response.data.balance.current_balance})
+                
+                transactions.forEach(transaction => {
+                    if (!dates_temp.includes(transaction.date.slice(3))){
+                        dates_temp.push(transaction.date.slice(3))
+                    }
+                })
+                setDates(dates_temp)
+                
             } catch(err) {
                 history.push("/session");
             }
         }
-        fetchData();
+        fetchData()
     }, [])
 
     const handleIncome = (e) => {
@@ -68,7 +83,15 @@ const WalletView = () => {
                 </div>
             </div>
             
-            <TransView transactions={transactions} setTransactions={setTransactions} />
+            <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
+                <Tab eventKey="all" title="All">
+                    <TransView transactions={transactions} setTransactions={setTransactions} />
+                </Tab>
+                {
+                    dates.map(date => <Tab eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
+                }                       
+            </Tabs>
+
             <div className="container">
                 <div className="row">
                     <div className="col-sm text-center">

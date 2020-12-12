@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import Backend from '../apis/Backend';
 import ReactFrappeChart from 'react-frappe-charts';
