@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { WalletContext } from '../context/WalletContext';
 import ReactFrappeChart from 'react-frappe-charts';
+import MonthlyAverage from '../components/MonthlyAverage';
 
 let expensesData = []
 let incomesData = []
@@ -97,6 +98,7 @@ const CategoryView = () => {
                     :<></>}
                 </div>
             </div>
+            <MonthlyAverage />
         </div>
     )
 }

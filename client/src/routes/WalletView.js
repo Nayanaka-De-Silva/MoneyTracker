@@ -17,15 +17,12 @@ const WalletView = () => {
                 const response = await Backend.get(`/wallets/${selectedWallet.id}`);
                 setTransactions(response.data.data);
                 setSelectedWallet({...selectedWallet, current_balance: response.data.balance.current_balance})
-                console.log(response.data.data[0].date)
-                console.log(response.data.data)
-                console.log(new Date(response.data.data[0].date))
             } catch(err) {
                 history.push("/session");
             }
         }
         fetchData();
-    }, [history, selectedWallet, setSelectedWallet])
+    }, [])
 
     const handleIncome = (e) => {
         e.preventDefault();

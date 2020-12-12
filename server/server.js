@@ -10,6 +10,7 @@ const {userRouter, authTokens} = require('./routes/users')
 const walletRouter = require('./routes/wallets')
 const transactionRouter = require('./routes/transactions')
 const categoryRouter = require('./routes/categories')
+const statsRouter = require('./routes/stats')
 
 // Middleware Imports
 const auth = require('./sec/auth')
@@ -42,6 +43,7 @@ app.use('/api/v1/moneytracker/users', userRouter)
 app.use('/api/v1/moneytracker/wallets', walletRouter)
 app.use('/api/v1/moneytracker/transactions', transactionRouter)
 app.use('/api/v1/moneytracker/categories', categoryRouter)
+app.use('/api/v1/moneytracker/stats', statsRouter)
 
 // Not Found Handler
 app.use((req, res, next) => {

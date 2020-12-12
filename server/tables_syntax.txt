@@ -48,6 +48,8 @@ SELECT SUM(amount)
 FROM transactions
 WHERE wallet_id=41;
 
-SELECT EXTRACT(YEAR FROM date) as Year, EXTRACT(MONTH FROM date) as Month, type, SUM(amount) 
-FROM transactions
-GROUP BY Year, Month, type;
+SELECT owner_id, EXTRACT(YEAR FROM date) as Year, EXTRACT(MONTH FROM date) as Month, type, ROUND(AVG(amount)::numeric, 2) 
+FROM transactions 
+GROUP BY owner_id, Year, Month, type
+HAVING owner_id=6 AND (type="Expense" OR type="Income")
+ORDER BY Month;

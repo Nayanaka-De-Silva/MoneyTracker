@@ -18,7 +18,7 @@ const Categories = () => {
             }
         }
         fetchData()
-    }, [history, setCategories])
+    }, [])
 
     
 
