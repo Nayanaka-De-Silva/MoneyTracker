@@ -6,7 +6,6 @@ import TransView from '../components/TransView';
 import { WalletContext } from '../context/WalletContext';
 import { Tabs, Tab } from 'react-bootstrap';
 
-
 const WalletView = () => {
     const history = useHistory();
 
@@ -14,16 +13,14 @@ const WalletView = () => {
     const [transactions, setTransactions] = useState([]);
     const [ dates, setDates ] = useState([])
 
-    const dates_temp = []
-
     useEffect(()=>{
-        console.log(transactions)    
-        console.log(dates)
         const fetchData = async () => {
             try{
                 const response = await Backend.get(`/wallets/${selectedWallet.id}`);
                 setTransactions(response.data.data);
                 setSelectedWallet({...selectedWallet, current_balance: response.data.balance.current_balance})
+                
+                const dates_temp = []
                 
                 transactions.forEach(transaction => {
                     if (!dates_temp.includes(transaction.date.slice(3))){
@@ -31,13 +28,12 @@ const WalletView = () => {
                     }
                 })
                 setDates(dates_temp)
-                
             } catch(err) {
                 history.push("/session");
             }
         }
         fetchData()
-    }, [])
+    },[transactions])
 
     const handleIncome = (e) => {
         e.preventDefault();
@@ -88,7 +84,7 @@ const WalletView = () => {
                     <TransView transactions={transactions} setTransactions={setTransactions} />
                 </Tab>
                 {
-                    dates.map(date => <Tab eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
+                    dates && dates.map(date => <Tab eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
                 }                       
             </Tabs>
 
