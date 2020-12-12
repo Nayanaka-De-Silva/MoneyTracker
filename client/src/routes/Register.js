@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../components/Header'
-import RegisterForm from '../components/entry/RegisterForm'
+import RegisterForm from '../components/entry/Register/RegisterForm'
 
 
 const Register = () => {

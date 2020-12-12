@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Backend from '../apis/Backend'
 import Header from '../components/Header'
-import LoginForm from '../components/entry/LoginForm'
+import LoginForm from '../components/entry/Login/LoginForm'
 
 const Login = () => {
     useEffect(()=>{
@@ -14,7 +14,7 @@ const Login = () => {
     },[])
 
     return (
-        <div className="container">
+        <div>
             <Header title="MoneyTracker" />
             <LoginForm />
         </div>

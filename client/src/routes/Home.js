@@ -25,13 +25,13 @@ const Home = () => {
                     <Wallets />
                 </div>
                 <div className="row">
-                    <div onClick={handleAddWallet} className="btn btn-primary">Add Wallet</div>
+                    <div onClick={handleAddWallet} className="btn btn-primary ml-3">Add Wallet</div>
                 </div>
                 <div className="row">
                     <Categories />
                 </div>
                 <div className="row">
-                    <button className="btn btn-primary" onClick={goToCategory}>View Details</button>
+                    <button className="btn btn-primary ml-3" onClick={goToCategory}>View Details</button>
                 </div>
             </div>
         </div>

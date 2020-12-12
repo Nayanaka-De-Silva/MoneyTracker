@@ -13,7 +13,7 @@ import WalletView from './routes/WalletView';
 
 function App() {
   return (
-    <div className="container">
+    <div>
       <WalletContextProvider>
       <Router>
         <Switch>

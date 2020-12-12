@@ -23,10 +23,10 @@ const Categories = () => {
     
 
     return (
-        <div className="container-fluid"> 
+        <div className="container"> 
             <div className="text-left display-4">Categories</div> <br />
-            <div className="container container-fluid">
-                <div className="row justify-content-right">
+            <div className="container">
+                <div className="row justify-content-between">
                     {categories && categories.some(category => category.type === "Income") ? <Category categoriesList={categories} type="Income" /> : null}
                     {categories && categories.some(category => category.type === "Expense") ? <Category categoriesList={categories} type="Expense" /> : null}
                     {categories && categories.some(category => category.type === "Transfer") ? <Category categoriesList={categories} type="Transfer" />:null}

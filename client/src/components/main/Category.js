@@ -36,10 +36,10 @@ const Category = ({ categoriesList, type }) => {
     }
 
     return (
-        <div className="col-4">
-            <h5 style={{ cursor: "pointer" }} className="h5">{ type }</h5>
+        <div className="col-md-3 border mb-1">
+            <h5 style={{ cursor: "pointer" }} className="text-center">{ type }</h5>
             <ul>
-            {selectedCategories && selectedCategories.map(category => <li style={{ cursor: "pointer" }} onClick={()=>handleRemove(category)} key={category.id}>{category.name} ({category.count})</li>)}
+            {selectedCategories && selectedCategories.map(category => <li className="" style={{ cursor: "pointer" }} onClick={()=>handleRemove(category)} key={category.id}>{category.name} ({category.count})</li>)}
             </ul>
         </div>
     )
