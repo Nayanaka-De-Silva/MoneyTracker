@@ -19,7 +19,7 @@ transactionRouter.post("/:id", async (req, res) => {
             // Check if category is added
             if (req.body.category){
                 // Check if the category exists in table
-                const categories = await db.query("SELECT id FROM categories WHERE name=$1 AND owner_id=$2", [req.body.category, req.user.id])
+                const categories = await db.query("SELECT id FROM categories WHERE name=$1 AND owner_id=$2 AND type=$3", [req.body.category, req.user.id, req.body.type])
                 category_id = categories.rowCount > 0 ? categories.rows[0].id : null;
                 if (!category_id) {
                     // Category doesn't exsist and needs to be added
