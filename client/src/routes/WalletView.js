@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Backend from '../apis/Backend';
 import Header from '../components/Header';
-import TransView from '../components/TransView';
+import TransView from '../components/walletView/TransView';
+import TransHeader from '../components/walletView/TransHeader';
+import TransFooter from '../components/walletView/TransFooter';
 import { WalletContext } from '../context/WalletContext';
 import { Tabs, Tab } from 'react-bootstrap';
 
@@ -59,47 +61,22 @@ const WalletView = () => {
     }
 
     return (
-        <div className="container">
-            <button onClick={e=>history.push("/")} className="btn btn-primary mt-1">Logout</button>
+        <div>
+            <button onClick={e=>history.push("/")} className="btn btn-primary ml-1 mt-1">Logout</button>
             <Header title={selectedWallet.name}/><br />
-            <div className="container">
-            <div className="row">
-                    <div className="col-sm">
-                        <button onClick={()=>history.push("/home")}className="btn btn-primary">Back</button>
-                    </div>
-                    <div className="col-7">
-                        <h3 className="text-left display-5">Current Balance: ${selectedWallet.current_balance}</h3>
-                    </div>
-                    <div className="col-sm text-right">
-                        <button onClick={()=>history.push('/editWallet')} className="btn btn-warning">Edit Wallet</button>
-                    </div>
-                    <div className="col-sm text-right">
-                        <button onClick={handleDelete} className="btn btn-danger">Delete Wallet</button>
-                    </div>
+            <div>
+                <TransHeader current_balance={selectedWallet.current_balance} handleDelete={handleDelete}/>
+                <div className="container p-0">
+                <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
+                    <Tab eventKey="all" title="All">
+                        <TransView transactions={transactions} setTransactions={setTransactions} />
+                    </Tab>
+                    {
+                        dates && dates.map(date => <Tab eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
+                    }                       
+                </Tabs>
                 </div>
-            </div>
-            
-            <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
-                <Tab eventKey="all" title="All">
-                    <TransView transactions={transactions} setTransactions={setTransactions} />
-                </Tab>
-                {
-                    dates && dates.map(date => <Tab eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
-                }                       
-            </Tabs>
-
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm text-center">
-                        <button onClick={handleIncome} className="btn btn-success">Add Income</button>
-                    </div>
-                    <div className="col-sm text-center">
-                        <button onClick={handleExpense} className="btn btn-danger">Add Expense</button>
-                    </div>
-                    <div className="col-sm text-center">
-                        <button onClick={handleTransfer} className="btn btn-primary">Add Transfer</button>
-                    </div>
-                </div>
+                <TransFooter handleIncome={handleIncome} handleExpense={handleExpense} handleTransfer={handleTransfer} />
             </div>
         </div>
     )

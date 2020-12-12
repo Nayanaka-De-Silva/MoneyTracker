@@ -34,7 +34,7 @@ const AddWallet = () => {
     }
 
     return (
-        <div>
+        <div className="container">
             <Header title="Add Wallet" />
             <form>
                 <div className="form-group">

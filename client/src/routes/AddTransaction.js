@@ -37,7 +37,7 @@ const AddTransaction = () => {
     }
 
     return (
-        <div>
+        <div className="container container-sm">
             <Header title="Add Transaction" />
             <form>
                 <br />
