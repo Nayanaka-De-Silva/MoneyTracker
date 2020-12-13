@@ -53,3 +53,19 @@ FROM transactions
 GROUP BY owner_id, Year, Month, type
 HAVING owner_id=6 AND (type="Expense" OR type="Income")
 ORDER BY Month;
+
+CREATE TABLE budgets (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    owner_id BIGINT NOT NULL,
+    starting_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    goal NUMERIC(8, 2)NOT NULL,
+    days SMALLINT NOT NULL,
+    remaining_bal REAL NOT NULL,
+    last_update DATE NOT NULL DEFAULT CURRENT_DATE,
+    today_bal REAL NOT NULL 
+);
+
+ALTER TABLE budgets
+ALTER COLUMN goal TYPE REAL;
+
+INSERT INTO budgets(owner_id, goal, days, remaining_bal, today_bal) VALUES($1, $2, $3, $2, 0)

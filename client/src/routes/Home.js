@@ -31,7 +31,7 @@ const Home = () => {
                     <Categories />
                 </div>
                 <div className="row">
-                    <button className="btn btn-primary ml-3" onClick={goToCategory}>View Details</button>
+                    <button className="btn btn-primary ml-3 mb-2" onClick={goToCategory}>View Details</button>
                 </div>
             </div>
         </div>

@@ -49,7 +49,7 @@ const LoginForm = () => {
                         </div>
                     </div>
                 </div>
-                {errorMessage ? <div className="alert alert-danger" role="alert">{errorMessage}</div>:null}
+                {errorMessage ? <div className="alert alert-danger mb-2" role="alert">{errorMessage}</div>:null}
             </form>
     )
 }

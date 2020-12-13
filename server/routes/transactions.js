@@ -46,6 +46,14 @@ transactionRouter.post("/:id", async (req, res) => {
                     const result_wallet = await db.query("SELECT current_balance FROM wallets WHERE id=$1 AND owner_id=$2;", [req.params.id, req.user.id]);
                     const newBalance = result_wallet.rows[0].current_balance + int_amt;
                     const result_balance = await db.query("UPDATE wallets SET current_balance=$1 WHERE id=$2 AND owner_id=$3", [newBalance, req.params.id, req.user.id]);
+
+                    // Update any budgets that are active
+                    const budget = await db.query("SELECT today_bal FROM budgets WHERE owner_id=$1", [req.user.id])
+                    if (budget.rowCount > 0) {
+                        let today_bal = budget.rows[0].today_bal;
+                        today_bal -= int_amt
+                        await db.query("UPDATE budgets SET today_bal=$1 WHERE owner_id=$2", [today_bal, req.user.id])
+                    }
                 }
                 else {
                     // Transfer is recorded
@@ -114,6 +122,14 @@ transactionRouter.delete('/:id', async (req, res) => {
 
             await db.query("UPDATE wallets SET current_balance=$1 WHERE id=$2 AND owner_id=$3", [current_balance, wallet_id, req.user.id])
             await db.query("DELETE FROM transactions WHERE id=$1", [req.params.id])
+            
+            // Update any budgets that are active
+            const budget = await db.query("SELECT today_bal FROM budgets WHERE owner_id=$1", [req.user.id])
+            if (budget.rowCount > 0) {
+                let today_bal = budget.rows[0].today_bal;
+                today_bal += amount;
+                await db.query("UPDATE budgets SET today_bal=$1 WHERE owner_id=$2", [today_bal, req.user.id])
+            }
 
             if (type === "Transfer") {
                 // Retrieve the other transfer
