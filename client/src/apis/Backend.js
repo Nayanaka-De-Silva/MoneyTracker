@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: "http://localhost:3001/api/v1/moneytracker",
+    baseURL: "/api/v1/moneytracker",
     withCredentials: true,
 })
