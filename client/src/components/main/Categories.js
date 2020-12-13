@@ -24,7 +24,8 @@ const Categories = () => {
 
     return (
         <div className="container"> 
-            <div className="text-left display-4">Categories</div> <br />
+            <div className="text-left display-4">Categories</div>
+            <p>(Click on a category to delete it)</p> <br />
             <div className="container">
                 <div className="row justify-content-between">
                     {categories && categories.some(category => category.type === "Income") ? <Category categoriesList={categories} type="Income" /> : null}

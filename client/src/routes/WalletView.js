@@ -72,9 +72,10 @@ const WalletView = () => {
                         <TransView transactions={transactions} setTransactions={setTransactions} />
                     </Tab>
                     {
-                        dates && dates.map(date => <Tab eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
+                        dates && dates.map(date => <Tab key={dates.indexOf(date)} eventKey={date} title={date}><TransView transactions={transactions.filter(trans => trans.date.slice(3)===date)} setTransactions={setTransactions} /></Tab>) 
                     }                       
                 </Tabs>
+                <p>(Click on a transaction to delete it)</p>
                 </div>
                 <TransFooter handleIncome={handleIncome} handleExpense={handleExpense} handleTransfer={handleTransfer} />
             </div>

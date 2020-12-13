@@ -33,13 +33,13 @@ budgetRouter.get('/', ensureAuth, async (req, res) => {
         if (budget.rowCount < 1) {
             // If no budget, return 200 OK and indicate there is no budget
             return res.status(200).json({
-                status: "Error",
+                status: "None",
                 data: "No budget",
             })
         }
 
         // Determine the number of days remaining
-        const result = await db.query("SELECT starting_date + days - last_update as diff FROM budgets;")
+        const result = await db.query("SELECT starting_date + days - last_update as diff FROM budgets WHERE owner_id=$1", [req.user.id])
         const remaining_days = result.rows[0].diff
 
         // Check if there are remaining days left for the budget
@@ -54,13 +54,17 @@ budgetRouter.get('/', ensureAuth, async (req, res) => {
         }
         else {
             // Determine the Exp_per_day
-            const Exp_per_day = Math.round(budget.rows[0].remaining_bal / remaining_days, 2)
+            const Exp_per_day = Number.parseFloat(budget.rows[0].remaining_bal / remaining_days).toFixed(2)
 
             // Check if the last transaction was today
-            const current_date = await db.query("SELECT CURRENT_DATE as current_date")
-            if (budget.rows[0].last_update === current_date.rows[0].current_date){
-                res.send(200).json({
+            const response = await db.query("SELECT last_update - CURRENT_DATE as diff FROM budgets")
+            //console.log("Last update: ", typeof(budget.rows[0].last_update))
+            //console.log("Current date: ", typeof(current_date.rows[0].current_date))
+            //console.log("Diff: ", response.rows[0].diff) 
+            if (response.rows[0].diff <= 0){
+                res.status(200).json({
                     status: "Active",
+                    new: false,
                     data: {
                         today_bal: budget.rows[0].today_bal,
                         Exp_per_day: Exp_per_day
@@ -78,6 +82,7 @@ budgetRouter.get('/', ensureAuth, async (req, res) => {
                 const newBudget = await db.query("UPDATE budgets SET last_update=CURRENT_DATE, remaining_bal=$1, today_bal=0 WHERE owner_id=$2", [remaining_bal, req.user.id])
                 res.status(200).json({
                     status: "Active",
+                    new: true,
                     data: {
                         today_bal: budget.rows[0].today_bal,
                         Exp_per_day: Exp_per_day
@@ -85,6 +90,26 @@ budgetRouter.get('/', ensureAuth, async (req, res) => {
                 })
             }
         }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({
+            status: "Failed",
+            message: "Please try again"
+        })
+    }
+})
+
+budgetRouter.delete('/', ensureAuth, async (req, res) => {
+    try {
+        // Delete the budget
+        await db.query("DELETE FROM budgets WHERE owner_id=$1", [req.user.id])
+
+        // Send response status
+        res.status(204).json({
+            status: "Success",
+            message: "Budget deleted" 
+        })
+
     }catch(err){
         console.log(err)
         res.status(500).json({

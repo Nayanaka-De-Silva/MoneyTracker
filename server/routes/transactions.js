@@ -114,9 +114,10 @@ transactionRouter.delete('/:id', async (req, res) => {
             let current_balance = parseFloat(result1.rows[0].current_balance);
             
             // Obtain the transaction information needed to counter balance the wallet's current_balance
-            const result2 = await db.query("SELECT type, amount FROM transactions WHERE id=$1 AND owner_id=$2", [req.params.id, req.user.id])
+            const result2 = await db.query("SELECT type, amount, date FROM transactions WHERE id=$1 AND owner_id=$2", [req.params.id, req.user.id])
             const type = result2.rows[0].type;
             const amount = parseFloat(result2.rows[0].amount)
+            const date = result2.rows[0].date;
 
             current_balance -= amount;
 
@@ -124,11 +125,13 @@ transactionRouter.delete('/:id', async (req, res) => {
             await db.query("DELETE FROM transactions WHERE id=$1", [req.params.id])
             
             // Update any budgets that are active
-            const budget = await db.query("SELECT today_bal FROM budgets WHERE owner_id=$1", [req.user.id])
+            const budget = await db.query("SELECT today_bal, $2 - starting_date AS diff FROM budgets WHERE owner_id=$1", [req.user.id, date])
             if (budget.rowCount > 0) {
-                let today_bal = budget.rows[0].today_bal;
-                today_bal += amount;
-                await db.query("UPDATE budgets SET today_bal=$1 WHERE owner_id=$2", [today_bal, req.user.id])
+                if (budget.rows[0].diff >= 0){
+                    let today_bal = budget.rows[0].today_bal;
+                    today_bal += amount;
+                    await db.query("UPDATE budgets SET today_bal=$1 WHERE owner_id=$2", [today_bal, req.user.id])
+                }
             }
 
             if (type === "Transfer") {

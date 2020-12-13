@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Categories from '../components/main/Categories';
 import Header from '../components/Header';
 import Wallets from '../components/main/Wallets';
+import Budget from '../components/main/Budget';
 
 const Home = () => {
     const history = useHistory();
@@ -26,6 +27,9 @@ const Home = () => {
                 </div>
                 <div className="row">
                     <div onClick={handleAddWallet} className="btn btn-primary ml-3">Add Wallet</div>
+                </div>
+                <div className="row">
+                    <Budget />
                 </div>
                 <div className="row">
                     <Categories />
