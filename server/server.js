@@ -18,6 +18,7 @@ const auth = require('./sec/auth')
 
 // Create Express server
 const app = express();
+app.use(express.static('Build'))
 
 // Middleware
 app.use(morgan('dev'));
